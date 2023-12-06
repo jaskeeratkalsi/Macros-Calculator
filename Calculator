@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macro Calculator</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .results {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Macro Calculator</h1>
+
+    <form id="macroForm">
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" name="weight" required>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <button type="button" onclick="calculateMacros()">Calculate Macros</button>
+    </form>
+
+    <div id="results" class="results"></div>
+
+    <script>
+        function calculateMacros() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const gender = document.getElementById('gender').value;
+
+            // Calculate calories
+            let calories = 0;
+            if (gender === 'male') {
+                calories = weight * 28.5;
+            } else if (gender === 'female') {
+                calories = weight * 24.5;
+            }
+
+            // Calculate macronutrient percentages
+            const proteinPercentage = 0.2;
+            const carbsPercentage = gender === 'male' ? 0.4 : 0.3;
+            const fatPercentage = 0.4;
+
+            // Calculate macronutrient amounts (grams)
+            const proteinGrams = calories * proteinPercentage / 4;
+            const carbsGrams = calories * carbsPercentage / 4;
+            const fatGrams = calories * fatPercentage / 9;
+
+            // Calculate macronutrient amounts (calories)
+            const proteinCalories = proteinGrams * 4;
+            const carbsCalories = carbsGrams * 4;
+            const fatCalories = fatGrams * 9;
+
+            // Display results
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h2>Macro Breakdown</h2>
+                <ul>
+                    <li>Calories: ${calories} kcal</li>
+                    <li>Protein: ${proteinGrams.toFixed(2)} g (${proteinCalories} kcal)</li>
+                    <li>Carbs: ${carbsGrams.toFixed(2)} g (${carbsCalories} kcal)</li>
+                    <li>Fat: ${fatGrams.toFixed(2)} g (${fatCalories} kcal)</li>
+                </ul>
+            `;
+        }
+    </script>
+</body>
+</html>
